@@ -1,6 +1,6 @@
 #Project 5: Neighborhood Map
 
-This is the fifth project of Udacity Front-End Web Developer Nanodegree. Click [here](http://junjunruan.github.io/P5-Neighborhood-Map) to visit the website.
+This is the fifth project of Udacity Front-End Web Developer Nanodegree. Click [here](http://junjunruan.github.io/P5-Neighborhood-Map/src) to visit the website.
 
 Here is the [link](https://www.udacity.com/course/viewer#!/c-nd001/l-2711658591/m-2684328537) to the rubric for the class.
 
