@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Neighborhood Map</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="lib/jQuery/jQuery.js"></script>
+  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="lib/knockout/knockout-3.3.0.js"></script>
+  <script>
+    function loadMap() {
+      google.maps.event.addDomListener(window, 'load', initialize);
+    }
+  </script>
+  <script>
+    function googleError() {
+      alert("Google map fail to load!");
+    }
+  </script>
+  <script async defer src="http://maps.googleapis.com/maps/api/js?callback=loadMap" onerror="googleError()"></script>
+</head>
+<body>
+  <div class="container my-site">
+    <h1 class="text-center">Restaurants Near Duke University</h1>
+    <!-- TODO: add search bar -->
+    <section class="row">
+      <div class="col-md-12 nopadding">
+        <div class="input-group nopadding">
+          <span class="input-group-btn" id="basic-addon1">
+            <label class="glyphicon glyphicon-search btn"></label>
+            <select class="btn" data-bind="options: choiceList, optionsText: 'name', optionsValue: 'id', value: selectedChoice, event: {change: selectionChanged}"></select>
+          </span>
+          <input type="text" autofocus class="form-control" data-bind="textInput: query, event: {keyup: search}" autocomplete="off" placeholder="Find a Location Here" aria-describedby="basic-addon1">
+        </div>
+    </section>
+    <section class="row">
+      <!-- TODO: add list view -->
+      <div class="col-md-3 nopadding">
+        <div class="list-group">
+          <a href="#" class="list-group-item disabled">
+            Key Locations
+          </a>
+          <div data-bind="foreach: locList">
+            <a href="#" class="list-group-item" data-bind="text: name, click: $parent.setLoc"></a>
+          </div>
+        </div>
+      </div>
+      <!-- TODO: add map -->
+      <div class="col-md-9 nopadding">
+        <div id="mapDiv"></div>
+      </div>
+      </div>
+    </section>
+  <script src="js/main.js"></script>
+</body>
+</html>
