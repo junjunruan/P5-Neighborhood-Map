@@ -8,6 +8,10 @@ Required courses: [Intro to AJAX](https://www.udacity.com/course/intro-to-ajax--
 
 Required Technics: Knockout framework, Ajax, JavaScript Design Pattern, Google Map API, Foursquare API, HTML, CSS
 
+Github folders:
+- src: source code
+- src-min: minified source code
+
 ##Main Functionalities:
 
 1.The interface includes three main components: a search bar, a list view, and a map. Notice the map has markers and the list view contains the names of each of the locations on the map.
