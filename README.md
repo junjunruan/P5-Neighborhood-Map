@@ -10,15 +10,15 @@ Required Technics: Knockout framework, Ajax, JavaScript Design Pattern, Google M
 
 ##Main Functionalities:
 
-1.The interface includes 3 main components: A Search bar, a list view, and a map. Notice the map has markers and the list view contains the names of each of the locations on the map.
+1.The interface includes three main components: a search bar, a list view, and a map. Notice the map has markers and the list view contains the names of each of the locations on the map.
 
 ![image](http://i.imgur.com/Lg0ZFrh.png?1)
 
-2.The search filters BOTH our list view and our map markers. The user can search by name or by location depending on which selected options of the dropdow list.
+2.The search filters both the list view and map markers. Users can search by name or by location depending on which selected options of the dropdow list.
 
 ![image](http://i.imgur.com/p9GAIJi.gif)
 
-3.Along with the list and markers filtering based on the search bar, both of them are also clickable. When a should click a list item it will move towards the marker and open an info window. Clicking on a marker should also open an info window. The content of the info window is from an API! Notice as well that markers can animate and change color to draw our users attention to that marker.
+3.Along with the list and markers filtering based on the search bar, both of them are also clickable. When click a list item it will move towards the marker and open an info window. Clicking on a marker will also open an info window. The content of the info window is from Foursquare API! Notice as well that markers can animate and change color to draw our users attention to that marker.
 
 ![image](http://imgur.com/Nyi9yuY.gif)
 
