@@ -14,7 +14,7 @@ Github folders:
 
 ##Main Functionalities:
 
-1.The interface includes three main components: a search bar, a list view, and a map. Notice the map has markers and the list view contains the names of each of the locations on the map.
+1.The interface includes three main components: a search bar, a list view, and a map. Notice the map has markers and the list view contains the names of each of the locations on the map. Make the list-view into a sidebar menu in small size screen.
 
 ![image](http://i.imgur.com/Lg0ZFrh.png?1)
 
@@ -22,7 +22,7 @@ Github folders:
 
 ![image](http://i.imgur.com/p9GAIJi.gif)
 
-3.Along with the list and markers filtering based on the search bar, both of them are also clickable. When click a list item it will move towards the marker and open an info window. Clicking on a marker will also open an info window. The content of the info window is from Foursquare API! Notice as well that markers can animate and change color to draw our users attention to that marker.
+3.Along with the list and markers filtering based on the search bar, both of them are also clickable. When click a list item it will move towards the marker and open an info window. Clicking on a marker will also open an info window. The content of the info window is from Foursquare API! Notice as well that markers can animate and change color to draw our users attention to that marker. What's more, the search bar have autocomplete function.
 
 ![image](http://imgur.com/Nyi9yuY.gif)
 
