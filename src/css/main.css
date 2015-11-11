@@ -14,6 +14,10 @@ body {
 }
 
 h1 {
+  display: inline;
+}
+
+.heading {
   margin: 3% auto 3% auto;
 }
 
@@ -23,9 +27,18 @@ ul {
   padding: 0;
 }
 
+.menu-icon {
+  display: none;
+}
+
 .input-group-btn select,
 .input-group-btn label {
 	border-color: #ccc;
+}
+
+.view-list {
+  overflow: scroll;
+  height: 500px;
 }
 
 #mapDiv {
@@ -42,18 +55,39 @@ ul {
   margin: 3px;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 992px) {
   h1 {
     font-size: 2em;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  h1 {
-    font-size: 1.7em;
+    margin: auto auto auto 20px;
   }
 
   .info-window {
     width: 150px;
+  }
+
+  .menu-icon {
+    display: inline;
+    width: 30px;
+    height: 30px;
+  }
+
+  .mainDiv {
+    position: absolute;
+    width: 80%;
+    height: 100%;
+  }
+
+  .view-list {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }
+}
+
+@media screen and (max-width: 660px) {
+  h1 {
+    font-size: 1.5em;
   }
 }
