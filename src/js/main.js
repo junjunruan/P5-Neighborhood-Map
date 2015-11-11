@@ -1,3 +1,5 @@
+var nameArr = [];
+var addrArr = [];
 var map;
 var locationNum = 0;
 var bounds;
@@ -8,14 +10,12 @@ var markers = []; // Store all the markers
 var windowContent;
 var redPin = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'; // Red marker
 var greenPin = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'; // Green marker
-var stopBounce;
 var foursquareUrl;
-var foursquareRequestTimeout;
 var CLIENT_ID = 'KIT4KDDY2ITLGLYX0MTQJT5WPODSQDI0H2WGJ004EQAJ40YL'; // CLIENT_ID for connecting Foursquare API
 var CLIENT_SECRET = 'MO4EL3JXXJGFVW13TRRILPDDYD3LVIGDCUETIDLLTWNLNXLN'; // CLIENT_SECRET for connecting Foursquare API
-var foursquareBaseUrl = 'https://api.foursquare.com/v2/venues/search?client_id=' // Base url for connecting Foursquare API
-                      + CLIENT_ID + '&client_secret=' + CLIENT_SECRET
-                      + '&v=20140806&query=';
+var foursquareBaseUrl = 'https://api.foursquare.com/v2/venues/search?client_id=' + // Base url for connecting Foursquare API
+												CLIENT_ID + '&client_secret=' + CLIENT_SECRET +
+												'&v=20140806&query=';
 
 /**
  * Initialize Google Map
@@ -33,7 +33,7 @@ function initialize() {
   map = new google.maps.Map(document.getElementById("mapDiv"), mapOptions);
 
   // Store all the marker information to markers array and all the infoWindow to infoWindows array
-  for (i = 0; i < iniLocs.length; i++) {
+  for (var i = 0; i < iniLocs.length; i++) {
     var address = iniLocs[i].address;
     geocoder.geocode({'address': address}, addMarker(i));
   }
@@ -58,11 +58,11 @@ function addMarker(index) {
       });
       markers.push(marker);
 
+			infoWindow = new google.maps.InfoWindow();
       // Push each inforwindow to inforwindows array
-      infoWindow = new google.maps.InfoWindow();
       infoWindowContent(index, function(windowContent){
         infoWindow.setContent(windowContent);
-        infoWindows.push(infoWindow);
+				infoWindows.push(infoWindow);
       });
 
       autoCenter(results[0].geometry.location);
@@ -70,11 +70,6 @@ function addMarker(index) {
       // Click a marker, show its animation and inforwindow
       google.maps.event.addListener(marker, 'click', function() {
           var self = this;
-
-          // If failed to get data from Foursquare API, alert information
-          foursquareRequestTimeout = setTimeout(function(){
-            alert('failed to connect to Foursquare API');
-          }, 8000);
 
           // Open corresponding infowindow
           infoWindowContent(index, function(windowContent){
@@ -94,7 +89,7 @@ function addMarker(index) {
     } else {
       alert('Location fail to geocode: ' + status);
     }
-  }
+  };
   return geocodeCallBack;
 }
 
@@ -106,16 +101,21 @@ function addMarker(index) {
 function infoWindowContent(index, infoWindowCallback) {
   foursquareUrl = foursquareBaseUrl + iniLocs[index].name + '&ll=' + iniLocs[index].lan + ','+ iniLocs[index].lng;
 
-  $.getJSON(foursquareUrl, function(data){
+  $.getJSON(foursquareUrl)
+	.done(function(data){
     var curVenue = data.response.venues[0];
-    curMarkerName = curVenue.name;
-    curMarkerAddress = curVenue.location.formattedAddress;
-    curMarkerPhone = (curVenue.contact.formattedPhone === undefined)? 'None': curVenue.contact.formattedPhone;
-    windowContent = '<div class="info-window"><p><strong>Name: </strong>' + curMarkerName+ '</p>' + '<p><strong>Address: </strong>  ' + curMarkerAddress + '</p>'
-                  + '<p><strong>Phone: </strong>' + curMarkerPhone + '</p></div>';
+    var curMarkerName = curVenue.name;
+    var curMarkerAddress = curVenue.location.formattedAddress;
+    var curMarkerPhone = (curVenue.contact.formattedPhone === undefined)? 'None': curVenue.contact.formattedPhone;
+    windowContent = '<div class="info-window"><p><strong>Name: </strong>' + curMarkerName+ '</p>' +
+										'<p><strong>Address: </strong>  ' + curMarkerAddress + '</p>' +
+                  	'<p><strong>Phone: </strong>' + curMarkerPhone + '</p></div>';
     infoWindowCallback(windowContent);
-    clearTimeout(foursquareRequestTimeout);
-  });
+  })
+	.fail(function(jqxhr, textStatus, error){
+      alert('Fail to connect to Foursquare: ' + textStatus + ' ' + jqxhr.status + ' ' + error);
+    }
+  );
 }
 
 /**
@@ -213,18 +213,26 @@ var iniLocs = [
     }
   ];
 
+// store names to nameArr, addresses to addrArr
+for(var j=0; j<iniLocs.length; j++) {
+  nameArr.push(iniLocs[j].name);
+  addrArr.push(iniLocs[j].address);
+}
+
+var inputDiv = $('.input-search');
+
 /**
  * Initialize the location data
  * @param {object} data - location data
  */
 var Loc = function(data) {
   this.name = ko.observable(data.name);
-}
+};
 
 // model: store all the search filters
 var iniChoices = [
-  { id: 'name', name: "Search Name" },
-  { id: 'address', name: "Search Location" }
+  { id: 'name', name: "Search By Name" },
+  { id: 'address', name: "Search By Address" }
 ];
 
 /**
@@ -234,7 +242,7 @@ var iniChoices = [
 var Choice = function(data) {
   this.id = ko.observable(data.id);
   this.name = ko.observable(data.name);
-}
+};
 
 /**
  * viewModel of knockout
@@ -263,7 +271,7 @@ var ViewModel = function() {
     for(var k=0; k<iniLocs.length; k++) {
       if(iniLocs[k].name == clickedLoc.name()) {
         markerReference = markers[k];
-        toggleBounce(markers[k]);
+        toggleBounce(markerReference);
         infoWindowContent(k, function(windowContent){
           infoWindow.setContent(windowContent);
           infoWindow.open(map, markerReference);
@@ -275,36 +283,70 @@ var ViewModel = function() {
           }, 1400);
       }
     }
-  }
+  };
 
   self.query = ko.observable('');
 
  /**
   * Show search results on view list and corresponding marker, search filer includes name or location
+	* @param {string} inputContent - input value or seleted autocomplete value
   */
-  function searchAll() {
+  function searchAll(inputContent) {
     self.locList.removeAll();
     for(var i=0; i<iniLocs.length; i++) {
       // Close all the infoWindows, just in case some infoWindow is still open
       infoWindows[i].close();
       markers[i].setVisible(false);
       // Show marched results in view list and marker
-      if(iniLocs[i][self.selectedChoice()].toLowerCase().indexOf(self.query().toLowerCase()) >= 0) {
+      if(iniLocs[i][self.selectedChoice()].toLowerCase().indexOf(inputContent.toLowerCase()) >= 0) {
           self.locList.push(new Loc(iniLocs[i]));
           markers[i].setVisible(true);
       }
     }
   }
 
+	/**
+   * Autocomplete name or address based on selected search filter
+   */
+  function searchAutoComplete() {
+  if(self.selectedChoice() == 'name') {
+    autoCompleteSource(nameArr);
+  } else {
+    autoCompleteSource(addrArr);
+  }
+}
+
+/**
+ * Implement autocomplete function by giving source data and
+ * showing search result based on selected autocomplete value
+ */
+function autoCompleteSource(sourceChoose){
+  var selectedValue;
+  inputDiv.autocomplete({
+    source: sourceChoose,
+    select: function(event,ui) {
+      selectedValue = ui.item.value;
+      searchAll(selectedValue);
+    }
+  });
+}
+
   // When input value changes, show search results
   self.search = function() {
-    searchAll();
+    searchAll(self.query());
+    searchAutoComplete();
   };
 
   // When selected filter changes, show search results
   self.selectionChanged = function() {
-    searchAll();
+    searchAll(self.query());
+    searchAutoComplete();
   };
-}
+};
 
 ko.applyBindings(new ViewModel());
+
+var menu = document.querySelector('.menu-icon');
+menu.addEventListener('click', function() {
+  $('.view-list').toggle("slide");
+});
